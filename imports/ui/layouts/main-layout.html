@@ -1,0 +1,26 @@
+<template name="mainLayout">
+    <style type="text/css">
+        body {
+            margin-top: 100px;
+        }
+        body > .grid {
+            height: 100%;
+        }
+    </style>
+        <div class="ui visible left inverted vertical sidebar menu">
+            <a class="item" href="{{pathForLogout}}">
+                <h4 class="ui grey header">{{name}}</h4>
+                <p>Sign Out</p>
+            </a>
+            <a class="item" href="">Home</a>
+            <a class="item" href="">Link Budget<div class="ui label">11</div></a>
+        </div>
+        <div class="pusher">
+            <div class="ui grid container">
+                {{>Template.dynamic template=content}}
+            </div>
+        </div>
+
+
+
+</template>

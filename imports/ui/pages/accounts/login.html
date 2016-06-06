@@ -1,0 +1,53 @@
+<template name="login">
+    <style type="text/css">
+        body {
+            background-color: #DADADA;
+            margin-top: 100px;
+        }
+        body > .grid {
+            height: 100%;
+        }
+        /*
+        .image {
+            margin-top: -100px;
+        }
+        */
+        .column {
+            max-width: 450px;
+        }
+    </style>
+    <div class="ui middle aligned center aligned grid">
+        <div class="column">
+            <h2 class="ui orange image header">
+                <!--
+                <img src="assets/images/logo.png" class="image">
+                -->
+                <div class="content">
+                    Log-in to your account
+                </div>
+            </h2>
+            <form class="ui large form" id="login-form">
+                <div class="ui stacked segment">
+                    <div class="field">
+                        <div class="ui left icon input">
+                            <i class="user icon"></i>
+                            <input type="text" name="username" placeholder="Employee ID">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="ui left icon input">
+                            <i class="lock icon"></i>
+                            <input type="password" name="password" placeholder="Password">
+                        </div>
+                    </div>
+                    <button type="submit" class="ui fluid large orange submit button">Login</button>
+
+                </div>
+
+                <div class="ui error message"></div>
+
+            </form>
+
+        </div>
+    </div>
+</template>
