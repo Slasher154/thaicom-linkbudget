@@ -1,0 +1,29 @@
+<template name="showAllSatellites">
+
+
+    <div class="">
+        <div class="page-title">
+            <div class="title_left">
+                <h1>Thaicom Satellites</h1>
+            </div>
+
+            <div class="title_right">
+                <div class="pull-right">
+                    <button type="button" class="btn btn-success"> Add a satellite
+                        <span class="pull-left">
+                        <span class="glyphicon glyphicon-plus">
+                        </span>
+                      </span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    <div class="row">
+        {{#each thaicomSatellite in thaicomSatellites}}
+            {{> thaicomSatelliteWidget satellite=thaicomSatellite}}
+        {{/each}}
+    </div>
+
+</template>

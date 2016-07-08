@@ -1,0 +1,59 @@
+<template name="thaicomSatelliteWidget">
+    <div class="col-md-3 col-xs-12 widget widget_tally_box">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>{{satellite.name}}</h2>
+                <!--
+                <ul class="nav navbar-right panel_toolbox">
+                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="#">Settings 1</a>
+                            </li>
+                            <li><a href="#">Settings 2</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li><a class="close-link"><i class="fa fa-close"></i></a>
+                    </li>
+                </ul>
+                -->
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <a href="{{pathFor 'showSingleSatellite' satelliteName=satellite.sluggifiedName }}">
+                    <img {{imageAttributes satellite.name}}/>
+                </a>
+
+                <div>
+                    <ul class="list-inline widget_tally">
+                        <li>
+                            <p>
+                                <span class="month">Orbital Slot</span>
+                                <span class="count">{{longitudeNumberToText satellite.orbitalSlot}}</span>
+                            </p>
+                        </li>
+                        <li>
+                            <p>
+                                <span class="month">Bandwidth Utilization </span>
+                                <span class="count">0%</span>
+                            </p>
+                        </li>
+                        <li>
+                            <p>
+                                <span class="month">Commercial Bandwidth Usage </span>
+                                <span class="count">0 GHz</span>
+                            </p>
+                        </li>
+                    </ul>
+                </div>
+                <a href="{{pathFor 'showSingleSatellite' satelliteName=satellite.sluggifiedName }}" class="btn btn-default btn-block">Details</a>
+                <button class="btn btn-default btn-block">Link Budget
+                </button>
+                <button class="btn btn-default btn-block">CTP</button>
+            </div>
+        </div>
+    </div>
+</template>

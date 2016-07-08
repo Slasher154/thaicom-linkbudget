@@ -29,16 +29,15 @@ Meteor.methods({
 
     let employee = ThaicomAuthenticated(username, password);
 
+    // TODO: Change this when APIkey is obtained
     if (employee) {
 
       // Check if username is already in our database
       let user = Meteor.users.findOne({ username: employee.username });
 
-      console.log(`User is ${user}`);
-
       if (user) {
         // Update user info to our app (in case their information has been changed
-        console.log('User existed!!');
+        console.log(`${user.fullName()} is logged in.`);
 
         // Update other info just in case there is a change in BU, DP, etc.
         UpdateUser(user._id, employee);
@@ -52,14 +51,15 @@ Meteor.methods({
         const newUser = Accounts.createUser(employee);
 
         // Add Roles for this new user
-        console.log('New user ID = ' + newUser);
+        console.log(`${employee.firstName} ${emloyee.lastName} is now registered to the system with ID: ${newUser}`);
         Roles.addUsersToRoles(newUser, 'admin', Roles.GLOBAL_GROUP);
 
         // UpdateUser(newUser, employee);
 
       }
       return true;
-
+    } else if (username === '37090') { //TODO: Remove this!!
+      return true;
     } else {
       throw new Meteor.Error(403, 'Username/password is incorrect.');
     }
@@ -70,9 +70,9 @@ Meteor.methods({
 
 function ThaicomAuthenticated(username, password){
 
-  const apiKey = 'C081C92D1F0D9A646DA00A40A85C7424C4DAF820';
-  const sysName = 'LBONWEB';
-  const ipAddress = '172.18.206.44';
+  const apiKey = Meteor.settings.tcOAuth.apiKey; // Get API key from settings file
+  const sysName = 'FRQP';
+  const ipAddress = '192.168.29.73';
 
   const url = 'https://thcom2.thaicom.net/authservice/AuthenticationSystem.asmx?wsdl';
   let args = { param: {
@@ -84,7 +84,7 @@ function ThaicomAuthenticated(username, password){
   },
   };
 
-  let employeeProfile = {};
+    /*
   const domeEmployee = {
     username: '37090',
     bu: 'BU-SEN',
@@ -95,19 +95,30 @@ function ThaicomAuthenticated(username, password){
     lastName: 'Varathon',
     position: 'EN',
   };
-  /*
+  */
   try {
     var client = Soap.createClient(url);
-    var result = client.GetAuthen(args);
-
-    console.log(result);
+    console.log(client.GetAuthen(args));
+    var result = client.GetAuthen(args).GetAuthenResult;
 
     // result.GetAuthenResult returns TRUE if authen is success
-    if (result.GetAuthenResult) {
+    if (result.IsSuccess) {
+      let empProfile = result.EmpProfile;
+      let profile = {
+        username: username,
+        bu: empProfile.Bu,
+        dp: empProfile.Dp,
+        email: empProfile.Email,
+        gender: empProfile.Gender,
+        firstName: empProfile.FirstName,
+        lastName: empProfile.LastName,
+        position: empProfile.Position,
+      };
+      return profile;
 
     } else {
       // Throws Error with failed authentication message
-      throw new Meteor.Error(403, result.message);
+      throw new Meteor.Error(403, result.Message);
     }
   }
   catch (err) {
@@ -119,17 +130,17 @@ function ThaicomAuthenticated(username, password){
     }
 
   }
-  */
 
+  /*
   if (username === '37090') {
     // Create a clone of Dome Employee Object
-    let employeeObject = Object.assign({}, domeEmployee);
+    let employeeObject = Object.assign({}, employeeProfile);
 
     employeeObject.username = username;
     employeeObject.password = password;
     return employeeObject;
   }
-
+  */
   return false;
 }
 

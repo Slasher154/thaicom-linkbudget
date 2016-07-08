@@ -3,3 +3,9 @@
  */
 
 import './dashboard.html';
+
+Template.dashboard.helpers({
+  myNumber() {
+    return Meteor.settings.public.myNumber;
+  },
+});

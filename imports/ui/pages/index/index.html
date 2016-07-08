@@ -1,4 +1,16 @@
 <template name="index">
-    <h1 class="ui dividing header">Index Page</h1>
-
+    <div class="">
+        <div class="page-title">
+            <div class="title_left">
+                <h1>Pick a Satellite</h1>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    <hr />
+    <div class="row">
+        {{#each thaicomSatellite in thaicomSatellites}}
+            {{> thaicomSatelliteWidget satellite=thaicomSatellite}}
+        {{/each}}
+    </div>
 </template>

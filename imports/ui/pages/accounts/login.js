@@ -65,6 +65,8 @@ let _handleAuth = function() {
   let username = template.find('[name="username"]').value,
     password = template.find ('[name="password"]').value;
 
+  console.log('Username = ' + username);
+
   Meteor.call('account.authenticate', username, password, (err, res) => {
     if(err) {
       $('.error').text(err.reason).show();
