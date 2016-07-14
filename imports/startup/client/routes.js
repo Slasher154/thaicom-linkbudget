@@ -18,6 +18,8 @@ import '../../ui/pages/access_denied/access-denied.js';
 
 // Domains page
 import '../../ui/pages/domains/satellites/show-all-satellites.js';
+import '../../ui/pages/domains/satellites/show-single-satellite.js';
+import '../../ui/pages/domains/transponders/add-new-transponder.js';
 
 // Manage the FlowRouter routes suggested by https://medium.com/@satyavh/using-flow-router-for-authentication-ba7bb2644f42#.pgc0y06tx
 
@@ -82,6 +84,17 @@ loggedIn.route('/logout', {
   }
 });
 
+// --------------------------------------Resources Routes---------------------------------------------------
+
+loggedIn.route('/satellite/:satelliteName', {
+  name: 'showSingleSatellite',
+  action() {
+    BlazeLayout.render('mainLayout', { content: 'showSingleSatellite' });
+  },
+});
+
+// -------------------------------------End of Resources Routes---------------------------------------------
+
 // Only admin can access following routes
 let admin = loggedIn.group({
   prefix: '/admin',
@@ -108,6 +121,7 @@ domain.route('/satellites', {
   },
 });
 
+/*
 domain.route('/satellites/:satelliteName', {
   name: 'showSingleSatellite',
   action() {
@@ -115,8 +129,17 @@ domain.route('/satellites/:satelliteName', {
     BlazeLayout.render('mainLayout', { content: 'showSingleSatellite' });
   },
 });
-
+*/
 // --------------------------------End of Satellite Domain Routes ---------------------------------
+
+// --------------------------------------Transponder Domain Routes ---------------------------------
+
+domain.route('/transponder/add', {
+  name: 'addNewTransponder',
+  action() {
+    BlazeLayout.render('mainLayout', { content: 'addNewTransponder' });
+  },
+});
 
 
 // Access Denied route

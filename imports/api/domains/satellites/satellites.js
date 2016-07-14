@@ -19,7 +19,7 @@ Satellites.schema = new SimpleSchema({
   type: {
     type: String,
     label: 'Service Type',
-    allowedValues: ['Broadband', 'Conventional'],
+    allowedValues: ['HTS', 'Conventional'],
   },
   isThaicom: {
     type: Boolean,

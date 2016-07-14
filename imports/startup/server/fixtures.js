@@ -5,5 +5,7 @@
 // Fill the DB with example data on startup
 
 import '../../api/domains/satellites/fixtures.js';
+import '../../api/domains/transponders/fixtures.js';
 
-Meteor.call('Satellites.insert');
+Meteor.call('fillInitialSatellitesData');
+Meteor.call('fillInitialTranspondersData');

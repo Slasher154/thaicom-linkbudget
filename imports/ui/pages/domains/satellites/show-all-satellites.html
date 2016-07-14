@@ -21,9 +21,15 @@
         <div class="clearfix"></div>
     </div>
     <div class="row">
-        {{#each thaicomSatellite in thaicomSatellites}}
-            {{> thaicomSatelliteWidget satellite=thaicomSatellite}}
-        {{/each}}
+        <div class="col-md-12">
+            <div class="x_content">
+                <div class="row">
+                    {{#each thaicomSatellite in thaicomSatellites}}
+                        {{> thaicomSatelliteWidget satellite=thaicomSatellite}}
+                    {{/each}}
+                </div>
+            </div>
+        </div>
     </div>
 
 </template>

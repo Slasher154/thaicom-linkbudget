@@ -6,5 +6,6 @@
 // as an API to the client.
 
 import './domains/satellites/satellites.js';
+import './domains/transponders/transponders.js';
 import './domains/users/users.js';
 

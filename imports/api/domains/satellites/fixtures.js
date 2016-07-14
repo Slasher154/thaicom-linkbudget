@@ -13,7 +13,7 @@ const thaicom4 = {
   alternateName: 'IPSTAR',
   orbitalSlot: 119.5,
   skb: 0.05,
-  type: 'Broadband',
+  type: 'hts',
   isThaicom: true,
   isActive: true,
 };
@@ -22,7 +22,7 @@ const thaicom5 = {
   name: 'Thaicom 5',
   orbitalSlot: 78.5,
   skb: 0.05,
-  type: 'Conventional',
+  type: 'conventional',
   isThaicom: true,
   isActive: true,
 };
@@ -31,7 +31,7 @@ const thaicom6 = {
   name: 'Thaicom 6',
   orbitalSlot: 78.5,
   skb: 0.05,
-  type: 'Conventional',
+  type: 'conventional',
   isThaicom: true,
   isActive: true,
 };
@@ -41,7 +41,7 @@ const thaicom7 = {
   alternateName: 'Asiasat 6',
   orbitalSlot: 120,
   skb: 0.05,
-  type: 'Conventional',
+  type: 'conventional',
   isThaicom: true,
   isActive: true,
 };
@@ -60,7 +60,7 @@ const thaicom8 = {
 const apstar7 = {
   name: 'Apstar 7',
   orbitalSlot: 76.5,
-  type: 'Conventional',
+  type: 'conventional',
   isThaicom: false,
   isActive: true,
 };
@@ -68,7 +68,7 @@ const apstar7 = {
 const expressAM4 = {
   name: 'Express-AM4',
   orbitalSlot: 80,
-  type: 'Conventional',
+  type: 'conventional',
   isThaicom: false,
   isActive: true,
 };
@@ -76,7 +76,7 @@ const expressAM4 = {
 const telkom3 = {
   name: 'Telkom-3',
   orbitalSlot: 118,
-  type: 'Conventional',
+  type: 'conventional',
   isThaicom: false,
   isActive: true,
 };
@@ -84,7 +84,7 @@ const telkom3 = {
 const asiasat4 = {
   name: 'Asiasat-4',
   orbitalSlot: 122,
-  type: 'Conventional',
+  type: 'conventional',
   isThaicom: false,
   isActive: true,
 };
@@ -105,7 +105,7 @@ asiasat4,
 let satellites = thaicomSatellites.concat(nonThaicomSatellites);
 
 Meteor.methods({
-  'Satellites.insert'() {
+  'fillInitialSatellitesData'() {
     if (Satellites.find().count() === 0) {
       satellites.forEach((satellite) => Satellites.insert(satellite));
     }
