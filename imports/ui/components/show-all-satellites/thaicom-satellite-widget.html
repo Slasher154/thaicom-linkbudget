@@ -6,8 +6,8 @@
                 <div class="clearfix"></div>
             </div>
             <div class="x_content">
-                <a href="{{pathFor 'showSingleSatellite' satelliteName=satellite.sluggifiedName }}">
-                    <img {{imageAttributes satellite.name}}/>
+                <a href="{{pathFor 'showSingleSatellite' satelliteName=satellite.slug}}">
+                    <img {{imageAttributes satellite.slug}}/>
                 </a>
 
                 <div>
@@ -32,7 +32,7 @@
                         </li>
                     </ul>
                 </div>
-                <a href="{{pathFor 'showSingleSatellite' satelliteName=satellite.sluggifiedName }}" class="btn btn-default btn-block">Details</a>
+                <a href="{{pathFor 'showSingleSatellite' satelliteName=satellite.slug}}" class="btn btn-default btn-block">Details</a>
                 <button class="btn btn-default btn-block">Link Budget
                 </button>
                 <button class="btn btn-default btn-block">CTP</button>

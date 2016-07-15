@@ -50,7 +50,7 @@ const thaicom8 = {
   name: 'Thaicom 8',
   orbitalSlot: 78.5,
   skb: 0.05,
-  type: 'Convetional',
+  type: 'conventional',
   isThaicom: true,
   isActive: true,
 };

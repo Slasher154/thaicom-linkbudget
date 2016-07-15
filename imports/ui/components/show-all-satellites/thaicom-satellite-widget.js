@@ -10,7 +10,7 @@ Template.thaicomSatelliteWidget.helpers({
   // All satellite images are stored in assest/images folder with slugified name
   imageAttributes(satelliteName) {
     return {
-      src: `/assets/images/satellites/${slugify(satelliteName)}.png`,
+      src: `/assets/images/satellites/${satelliteName}.png`,
       alt: `${satelliteName}`,
       class: 'img-responsive',
     };

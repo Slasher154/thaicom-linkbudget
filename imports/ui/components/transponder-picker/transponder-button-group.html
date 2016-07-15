@@ -1,0 +1,14 @@
+<template name="transponderButtonGroup">
+    <div class="btn-group" data-toggle="buttons">
+        {{#each transponder in transponders}}
+
+            <label class="btn btn-default transponderLink">
+                <input type="radio" name="transponderOptions" id="{{transponder.slug}}"> {{transponder.name}}
+            </label>
+
+            <!--
+            <a href="{{pathFor 'showSingleTransponder' satelliteName=transponder.slugifiedSatelliteName transponderName=transponder.slug}}" class="btn btn-default">{{transponder.name}}</a>
+            -->
+        {{/each}}
+    </div>
+</template>

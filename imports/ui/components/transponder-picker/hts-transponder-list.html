@@ -1,0 +1,96 @@
+<template name="htsTransponderList">
+    <div class="col-md-3 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>Beams </h2>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <div class="row">
+                    <p>Country</p>
+                    <select id="countryPicker" class="form-control">
+                        <option value="">Select Country</option>
+                        {{#each country in countries}}
+                            <option value="{{country.name}}">{{country.name}}</option>
+                        {{/each}}
+                    </select>
+                </div>
+                <br>
+                <!-- Path picker (Forward/RTN) -->
+                <!--
+                <div class="row">
+                    <p>Path</p>
+                    <div class="btn-group" data-toggle="buttons">
+                        <label class="btn btn-default">
+                            <input type="radio" name="options" id="forward"> Forward
+                        </label>
+                        <label class="btn btn-default">
+                            <input type="radio" name="options" id="return"> Return
+                        </label>
+                    </div>
+                </div>
+                <br>
+                -->
+                <!-- Transponder Picker -->
+                <div class="row">
+                    <p>Forward Beams</p>
+                    {{>transponderButtonGroup transponders=forwardTransponders}}
+                </div>
+                <br>
+                <div class="row">
+                    <p>Return Beams</p>
+                    {{>transponderButtonGroup transponders=returnTransponders}}
+                </div>
+
+                <!--
+                <div class="accordion" id="accordion" role="tablist" aria-multiselectable="true">
+                {{#each country in countries}}
+                    {{>htsTransponderItem country=country}}
+                {{/each}}
+                </div>
+                -->
+            </div>
+        </div>
+    </div>
+
+</template>
+
+<template name="htsTransponderItem">
+    <!-- start accordion -->
+
+        <div class="panel">
+            <a class="panel-heading" role="tab" id="heading{{slugify country.name}}" data-toggle="collapse" data-parent="#accordion"  href="#collapse{{slugify country.name}}" aria-expanded="false" aria-controls="collapse{{slugify country.name}}">
+                <h4 class="panel-title">{{country.name}}</h4>
+            </a>
+            <div id="collapse{{slugify country.name}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading{{slugify country.name}}">
+                <div class="panel-body">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Bandwidth (MHz)</th>
+                                <th>Uplink Polarization</th>
+                                <th>Downlink Polarization</th>
+                                <th>Default Gateway</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each transponder in country.transponders}}
+                            <tr>
+                                <td>{{transponder.beam}}</td>
+                                <td>{{transponder.bandwidth}}</td>
+                                <td>{{transponder.uplinkPolarization}}</td>
+                                <td>{{transponder.downlinkPolarization}}</td>
+                                <td>{{transponder.defaultGateway}}</td>
+                            </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+
+
+</template>
+

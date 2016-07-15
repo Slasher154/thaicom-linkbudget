@@ -1,0 +1,43 @@
+<template name="recentUpdatesList">
+    <ul class="list-unstyled msg_list">
+        <li>
+            <a>
+                <!--
+                <span class="image">
+                    <img src="/assets/images/img.jpg" alt="img"/>
+                </span>
+                -->
+                      <span>
+                          <span>Coming Soon</span>
+                      <span class="time">Someday</span>
+                      </span>
+                      <span class="message">
+                          The recent updates system will be ready once CTP and Link Budget systems are integrated.
+                      </span>
+            </a>
+        </li>
+        {{#each notification in notifications}}
+            {{> recentUpdatesItem notification=notification}}
+        {{/each}}
+    </ul>
+</template>
+
+<template name="recentUpdatesItem">
+        <li>
+            <a>
+                      <!--
+                      <span class="image">
+                          <img src="/assets/images/img.jpg" alt="img"/>
+                      </span>
+                      -->
+                      <span>
+                          <span>{{notification.title}}</span>
+                      <span class="time">{{notification.occuredAt}}</span>
+                      </span>
+                      <span class="message">
+                                   {{notification.message}}
+                      </span>
+            </a>
+        </li>
+
+</template>

@@ -19,6 +19,7 @@ import '../../ui/pages/access_denied/access-denied.js';
 // Domains page
 import '../../ui/pages/domains/satellites/show-all-satellites.js';
 import '../../ui/pages/domains/satellites/show-single-satellite.js';
+import '../../ui/pages/domains/transponders/show-single-transponder.js';
 import '../../ui/pages/domains/transponders/add-new-transponder.js';
 
 // Manage the FlowRouter routes suggested by https://medium.com/@satyavh/using-flow-router-for-authentication-ba7bb2644f42#.pgc0y06tx
@@ -90,6 +91,13 @@ loggedIn.route('/satellite/:satelliteName', {
   name: 'showSingleSatellite',
   action() {
     BlazeLayout.render('mainLayout', { content: 'showSingleSatellite' });
+  },
+});
+
+loggedIn.route('/satellite/:satelliteName/:transponderName', {
+  name: 'showSingleTransponder',
+  action() {
+    BlazeLayout.render('mainLayout', { content: 'showSingleTransponder' });
   },
 });
 

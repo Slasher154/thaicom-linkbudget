@@ -8,11 +8,31 @@
         </div>
         <div class="clearfix"></div>
     </div>
-    <hr />
+    <hr/>
     {{#if viewingSatellite.isThaicom}}
         <div class="row">
+            <!--
             {{> thaicomSatelliteWidget satellite=viewingSatellite}}
+            -->
+            {{> transponderPickerWidget satellite=viewingSatellite}}
+            {{> satelliteNotificationWidget notifications=notifications}}
+
 
         </div>
     {{/if}}
+</template>
+
+<template name="satelliteNotificationWidget">
+    <div class="col-md-3 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>Recent Updates
+                </h2>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                {{>recentUpdatesList notifications=notifications}}
+            </div>
+        </div>
+    </div>
 </template>

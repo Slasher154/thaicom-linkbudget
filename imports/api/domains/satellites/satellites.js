@@ -15,11 +15,21 @@ Satellites.schema = new SimpleSchema({
     type: String,
     label: 'Name',
   },
+  alternateName: {
+    type: String,
+    optional: true,
+  },
   orbitalSlot: Object.assign(LongitudeField, { label: 'Orbital Slot' }),
   type: {
     type: String,
     label: 'Service Type',
-    allowedValues: ['HTS', 'Conventional'],
+    allowedValues: ['hts', 'conventional'],
+    autoform: {
+      options: [
+        { label: 'HTS', value: 'hts' },
+        { label: 'Conventional', value: 'conventional' },
+      ]
+    }
   },
   isThaicom: {
     type: Boolean,
@@ -34,6 +44,11 @@ Satellites.schema = new SimpleSchema({
 
 // Attach schema to satellite collection
 Satellites.attachSchema(Satellites.schema);
+
+// Add a hook to add slug name before inserting into mongodb database
+Satellites.before.insert((userId, doc) => {
+  doc.slug = slugify(doc.name);
+});
 
 // Allow callback for insert, update, remove from autoforms
 

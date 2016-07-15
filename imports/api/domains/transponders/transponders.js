@@ -205,3 +205,21 @@ Transponders.schema = new SimpleSchema({
 
 // Attach schema to satellite collection
 Transponders.attachSchema(Transponders.schema);
+
+// Add a hook to add slug name before inserting into mongodb database
+Transponders.before.insert((userId, doc) => {
+  const satellite = Satellites.findOne({ name: doc.satellite });
+  // If we are inserting HTS transponder, create slug from beam name ('202-fwd', '514-rtn','bc-100-lb',etc)
+  if (satellite.type === 'hts') {
+    doc.slug = slugify(doc.beam);
+    doc.displayName = doc.beam;
+  }
+  // If we are inserting Conventional transponder, create slug from transponder name ('5v',1g-semi', etc)
+  else if (satellite.type === 'conventional') {
+    doc.slug = slugify(doc.name);
+    doc.displayName = doc.name;
+  }
+  else {
+
+  }
+});

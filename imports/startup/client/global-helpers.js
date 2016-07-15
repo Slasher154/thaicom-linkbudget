@@ -30,3 +30,7 @@ Template.registerHelper('slugify', (text) => {
     return slugify(text);
   }
 });
+
+Template.registerHelper('equals', (a1, a2) => {
+  return a1 === a2;
+});

@@ -1,0 +1,71 @@
+<template name="conventionalTransponderList">
+    <div class="col-md-3 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>Transponders</h2>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <div class="row">
+                    <p>Country</p>
+                    <select id="beamPicker" class="form-control">
+                        <option value="">Select Beam</option>
+                        {{#each beam in beams}}
+                            <option value="{{beam.name}}">{{beam.name}}</option>
+                        {{/each}}
+                    </select>
+                </div>
+                <br>
+
+                <br>
+                <div class="row">
+                    <p>Beams</p>
+                    {{>transponderButtonGroup transponders=transponders}}
+                </div>
+                <!--
+                <div class="accordion" id="accordion" role="tablist" aria-multiselectable="true">
+                    {{#each beam in beams}}
+                    {{>conventionalTransponderItem beam=beam}}
+                {{/each}}
+                </div>
+                -->
+            </div>
+        </div>
+    </div>
+</template>
+
+<template name="conventionalTransponderItem">
+    <!-- start accordion -->
+
+    <div class="panel">
+        <a class="panel-heading" role="tab" id="heading{{slugify beam.name}}" data-toggle="collapse" data-parent="#accordion"  href="#collapse{{slugify beam.name}}" aria-expanded="false" aria-controls="collapse{{slugify beam.name}}">
+            <h4 class="panel-title">{{beam.name}}</h4>
+        </a>
+        <div id="collapse{{slugify beam.name}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading{{slugify beam.name}}">
+            <div class="panel-body">
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Bandwidth (MHz)</th>
+                        <th>Uplink Polarization</th>
+                        <th>Downlink Polarization</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {{#each transponder in beam.transponders}}
+                        <tr>
+                            <td>{{transponder.name}}</td>
+                            <td>{{transponder.bandwidth}}</td>
+                            <td>{{transponder.uplinkPolarization}}</td>
+                            <td>{{transponder.downlinkPolarization}}</td>
+                        </tr>
+                    {{/each}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</template>
+

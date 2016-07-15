@@ -1,0 +1,8 @@
+<template name="transponderPickerWidget">
+    {{#if equals satellite.type 'hts'}}
+        {{> htsTransponderList satellite=satellite transponder=transponder}}
+    {{/if}}
+    {{#if equals satellite.type 'conventional'}}
+        {{> conventionalTransponderList satellite=satellite transponder=transponder}}
+    {{/if}}
+</template>
