@@ -52,7 +52,18 @@ Template.conventionalTransponderList.helpers({
   transponders() {
     // Here we get our template instance from Template.instance() and
     // can access transponders from it
-    return Template.instance().transponderList.get();
+    // Here we get our template instance from Template.instance() and
+    // can access transponders from it
+    let transponders = Template.instance().transponderList.get();
+    let viewingTransponder = Template.currentData().transponder;
+    if(viewingTransponder) {
+      transponders.forEach((tp) => {
+        if (tp._id === viewingTransponder._id) {
+          tp.activeStatus = 'active';
+        }
+      });
+    }
+    return transponders;
   }
 });
 

@@ -107,5 +107,46 @@ export const DefinedContoursField = {
 
 export const CountryField = {
   type: String,
-
 }
+
+export const LossField = {
+  type: Number,
+  decimal: true,
+  max: 0,
+}
+
+export const HpaSchema = new SimpleSchema({
+  type: {
+    type: 'String',
+    allowedValues: ['hpa', 'buc'],
+    autoform: {
+      options: [
+        { label: 'HPA', value: 'hpa' },
+        { label: 'BUC', value: 'buc' },
+      ],
+    },
+  },
+  sizingInWatts: {
+    type: Number,
+    decimal: true,
+    label: 'HPA Sizing in Watts',
+  },
+  outputBackoff: Object.assign(BackoffField, { label: 'HPA Output Backoff in dB'}),
+  inputFeedLoss: Object.assign(LossField, { label: 'Input feed loss in dB (must be negative)'}),
+  intermod: {
+    type: Number,
+    decimal: true,
+    label: 'Intermodulation of HPA',
+  },
+  intermodRain: {
+    type: Number,
+    decimal: true,
+    label: 'Intermodulation of HPA at Rain Fade',
+  },
+  upc: {
+    type: Number,
+    decimal: true,
+    label: 'Uplink Power Control in dB',
+  },
+
+});

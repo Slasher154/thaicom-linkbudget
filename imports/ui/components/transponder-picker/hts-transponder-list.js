@@ -65,11 +65,31 @@ Template.htsTransponderList.helpers({
   forwardTransponders() {
     // Here we get our template instance from Template.instance() and
     // can access transponders from it
-    return _.sortBy(_.where(Template.instance().transponderList.get(), { path: 'forward' }), 'name');
+    let fwdTransponders = _.sortBy(_.where(Template.instance().transponderList.get(), { path: 'forward' }), 'name');
+    let viewingTransponder = Template.currentData().transponder;
+    if(viewingTransponder) {
+      fwdTransponders.forEach((tp) => {
+        if (tp._id === viewingTransponder._id) {
+          tp.activeStatus = 'active';
+        }
+      });
+    }
+    return fwdTransponders;
   },
   returnTransponders() {
-    return _.sortBy(_.where(Template.instance().transponderList.get(), { path: 'return' }), 'name');
-  }
+    // Here we get our template instance from Template.instance() and
+    // can access transponders from it
+    let rtnTransponders = _.sortBy(_.where(Template.instance().transponderList.get(), { path: 'return' }), 'name');
+    let viewingTransponder = Template.currentData().transponder;
+    if(viewingTransponder) {
+      rtnTransponders.forEach((tp) => {
+        if (tp._id === viewingTransponder._id) {
+          tp.activeStatus = 'active';
+        }
+      });
+    }
+    return rtnTransponders;
+  },
 });
 
 Template.htsTransponderList.events({
