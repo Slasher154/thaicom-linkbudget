@@ -1,0 +1,36 @@
+<template name="showAllGateways">
+    {{>pageTitle title='All Gateways'}}
+
+    <!-- Thaicom 4 Gateways -->
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>List of Gateways</h2>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <div class="row">
+                        {{> satelliteFilter}}
+                    </div>
+                    <div class="row">
+                        {{> reactiveTableFilter id="normalFilter" label="Filter by other fields" }}
+                        {{> reactiveTable settings=settings}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<template name="editGatewayButton">
+    <a class="btn btn-xs btn-default" href="{{editGatewayPath}}">Edit</a>
+</template>
+
+<template name="satelliteFilter">
+    <div class="btn-group satellite-filter-input">
+        {{#each satellite in satellites}}
+            <button class="btn btn-default" type="button">{{satellite.name}}</button>
+        {{/each}}
+    </div>
+</template>

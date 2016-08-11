@@ -14,30 +14,30 @@ Meteor.methods({
   'fillInitialTranspondersData'() {
     if (Transponders.find().count() === 0) {
       // Validate and insert Thaicom 4 - Forward + Broadcast beams
-      ValidateTranponders(forwardTransponders);
+      ValidateTransponders(forwardTransponders);
       forwardTransponders.forEach((transponder) => Transponders.insert(transponder));
 
       // Validate and insert Thaicom 4 - Return beams
-      ValidateTranponders(returnTransponders);
+      ValidateTransponders(returnTransponders);
       returnTransponders.forEach((transponder) => Transponders.insert(transponder));
 
       // Validate and insert Thaicom 5 Transponders
-      ValidateTranponders(thaicom5Transponders);
+      ValidateTransponders(thaicom5Transponders);
       thaicom5Transponders.forEach((transponder) => Transponders.insert(transponder));
 
       // Validate and insert Thaicom 6 Transponders
-      ValidateTranponders(thaicom6Transponders);
+      ValidateTransponders(thaicom6Transponders);
       thaicom6Transponders.forEach((transponder) => Transponders.insert(transponder));
 
       // Validate and insert Thaicom 7 Transponders
-      ValidateTranponders(thaicom7Transponders);
+      ValidateTransponders(thaicom7Transponders);
       thaicom7Transponders.forEach((transponder) => Transponders.insert(transponder));
 
     }
   },
 });
 
-function ValidateTranponders(arrayOfTransponders) {
+function ValidateTransponders(arrayOfTransponders) {
   arrayOfTransponders.forEach((doc) => {
     check(doc, Transponders.schema);
     console.log(`${doc.name}-${doc.path} check result: ${Match.test(doc, Transponders.schema)}`);

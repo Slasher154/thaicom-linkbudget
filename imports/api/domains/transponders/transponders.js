@@ -8,6 +8,9 @@ import { SimpleSchema } from 'meteor/aldeed:simple-schema';
 import { Autoform } from 'meteor/aldeed:autoform';
 import { FrequencyField, BandwidthField, FrequencyBandField, PolarizationField, NumberOfCarriersField, BackoffField, InterferenceTypeField, SatelliteOperationModeField, DefinedContoursField, CountryField } from '../schemas/schemas.js';
 import { Satellites } from '../satellites/satellites.js';
+import { Countries } from '../countries/countries.js';
+import { FrequencyBands } from '../frequencyBands/frequencyBands.js';
+import { Gateways } from '../gateways/gateways.js';
 
 
 export const Transponders = new Mongo.Collection('transponders');
@@ -18,7 +21,7 @@ Transponders.schema = new SimpleSchema({
     type: String,
     label: 'Name',
   },
-  satellite: {
+  satelliteName: {
     type: String,
     label: 'Satellite',
     autoform: {
@@ -30,11 +33,12 @@ Transponders.schema = new SimpleSchema({
         return satelliteObject;
       },
     },
+    optional: true,
   },
   uplinkCenterFrequency: Object.assign(FrequencyField, { label: 'Uplink Center Frequency (GHz)' }),
   downlinkCenterFrequency: Object.assign(FrequencyField, { label: 'Downlink Center Frequency (GHz)' }),
-  uplinkFrequencyBand: Object.assign(FrequencyBandField, { label: 'Uplink Frequency Band' }),
-  downlinkFrequencyBand: Object.assign(FrequencyBandField, { label: 'Downlink Frequency Band' }),
+  uplinkFrequencyBandName: Object.assign(FrequencyBandField, { label: 'Uplink Frequency Band', optional: true }),
+  downlinkFrequencyBandName: Object.assign(FrequencyBandField, { label: 'Downlink Frequency Band', optional: true }),
   bandwidth: Object.assign(BandwidthField, { label: 'Bandwidth (MHz)' }),
   type: {
     type: String,
@@ -46,7 +50,7 @@ Transponders.schema = new SimpleSchema({
         { label: 'Spot', value: 'spot' },
         { label: 'Shape', value: 'shape' },
         { label: 'Augment', value: 'augment' },
-      ]
+      ],
     },
   },
   path: {
@@ -56,8 +60,8 @@ Transponders.schema = new SimpleSchema({
     autoform: {
       options: [
         { label: 'Forward', value: 'forward' },
-        { label: 'Return', value: 'return'},
-      ]
+        { label: 'Return', value: 'return' },
+      ],
     },
   },
   gtPeak: {
@@ -80,7 +84,7 @@ Transponders.schema = new SimpleSchema({
     type: [String],
     minCount: 1,
     maxCount: 2,
-    //allowedValues: ['FGM','ALC'],
+    label: 'Allowed Values: ALC, FGM',
   },
   operatingMode: Object.assign(SatelliteOperationModeField, {
     label: 'Default Operating mode (FGM or ALC)',
@@ -146,7 +150,7 @@ Transponders.schema = new SimpleSchema({
     label: 'Designed ALC deep-in (dB) (Positive = Within Dynamic Range, Negative = Not reach deep-in)',
     optional: true,
   },
-  defaultGateway: {
+  defaultGatewayName: {
     type: String,
     label: 'Default Gateway (optional)',
     optional: true,
@@ -166,8 +170,8 @@ Transponders.schema = new SimpleSchema({
       options: [
         { label: 'Uplink', value: 'uplink' },
         { label: 'Downlink', value: 'downlink' },
-      ]
-    }
+      ],
+    },
   },
   'carrierOverInterferences.$.location': Object.assign(DefinedContoursField, {
     label: 'Predefined locations for this interference',
@@ -195,12 +199,11 @@ Transponders.schema = new SimpleSchema({
     type: String,
     label: 'Beam Name',
   },
-  country: Object.assign(CountryField, {
-    label: 'Country',
+  countriesName: {
+    type: [String],
+    label: 'Countries under this transponder coverage',
     optional: true,
-  }),
-
-
+  },
 });
 
 // Attach schema to satellite collection
@@ -208,18 +211,99 @@ Transponders.attachSchema(Transponders.schema);
 
 // Add a hook to add slug name before inserting into mongodb database
 Transponders.before.insert((userId, doc) => {
-  const satellite = Satellites.findOne({ name: doc.satellite });
-  // If we are inserting HTS transponder, create slug from beam name ('202-fwd', '514-rtn','bc-100-lb',etc)
-  if (satellite.type === 'hts') {
-    doc.slug = slugify(doc.beam);
-    doc.displayName = doc.beam;
-  }
-  // If we are inserting Conventional transponder, create slug from transponder name ('5v',1g-semi', etc)
-  else if (satellite.type === 'conventional') {
-    doc.slug = slugify(doc.name);
-    doc.displayName = doc.name;
-  }
-  else {
 
+  if (doc.satelliteName) {
+    const satellite = Satellites.findOne({ name: doc.satelliteName });
+
+    if(satellite) {
+      // If we are inserting HTS transponder, create slug from beam name ('202-fwd', '514-rtn','bc-100-lb',etc)
+      if (satellite.type === 'hts') {
+        doc.slug = slugify(doc.beam);
+        doc.displayName = doc.beam;
+      }
+      // If we are inserting Conventional transponder, create slug from transponder name ('5v',1g-semi', etc)
+      else if (satellite.type === 'conventional') {
+        doc.slug = slugify(doc.name);
+        doc.displayName = doc.name;
+      } else {
+        throw new Meteor.Error(500, `Satellite type must be either hts or conventional`);
+      }
+
+      // Insert satellite Id from given satellite name
+      doc.satelliteId = satellite._id;
+
+      // Insert gateway Id from a given gateway name
+      if (doc.defaultGatewayName) {
+        let gateway = Gateways.findOne({ satelliteId: doc.satelliteId, name: doc.defaultGatewayName });
+        if (gateway) {
+          doc.defaultGatewayId = gateway._id;
+        } else {
+          throw new Meteor.Error(500, `Gateway '${doc.defaultGatewayName}' does not match any gateway in the database.`);
+        }
+      }
+    } else {
+      throw new Meteor.Error(500, `Satellite '${doc.satelliteName}' does not match any satellite in the database`);
+    }
   }
+
+  // Insert countries ID from the given countries
+  if (doc.countriesName) {
+    doc.countryIds = [];
+    doc.countriesName.forEach((country) => {
+      let foundedCountry = Countries.findOne({ 'name.common': country });
+      if (foundedCountry) {
+        doc.countryIds.push(foundedCountry._id);
+      } else {
+        throw new Meteor.Error(500, `Country '${country}' does not match any country in the database.`);
+      }
+    });
+  }
+
+  // Insert uplink frequency band ID
+  if (doc.uplinkFrequencyBandName) {
+    let frequencyBand = FrequencyBands.findOne({ $or: [{ slug: doc.uplinkFrequencyBandName }, { name: doc.uplinkFrequencyBandName }] });
+    if (frequencyBand) {
+      doc.uplinkFrequencyBandId = frequencyBand._id;
+    } else {
+      throw new Meteor.Error(500, `Uplink frequency Band '${doc.uplinkFrequencyBandName}' does not match any frequency band in the database`);
+    }
+  }
+
+  // Insert downlink frequency band ID
+  if (doc.downlinkFrequencyBandName) {
+    let frequencyBand = FrequencyBands.findOne({ $or: [{ slug: doc.downlinkFrequencyBandName }, { name: doc.downlinkFrequencyBandName }] });
+    if (frequencyBand) {
+      doc.downlinkFrequencyBandId = frequencyBand._id;
+    } else {
+      throw new Meteor.Error(500, `Downlink frequency Band '${doc.downlinkFrequencyBandName}' does not match any frequency band in the database`);
+    }
+  }
+
+});
+
+Transponders.helpers({
+  satellite() {
+    return Satellites.findOne(this.satelliteId);
+  },
+  defaultGateway() {
+    return Gateways.findOne(this.defaultGatewayId);
+  },
+  countries() {
+    return Countries.find({ _id: { $in: this.countryIds } }).fetch();
+  },
+  uplinkFrequencyBand() {
+    return FrequencyBands.findOne(this.uplinkFrequencyBandId);
+  },
+  downlinkFrequencyBand() {
+    return FrequencyBands.findOne(this.downlinkFrequencyBandId);
+  },
+  frequencyBand() {
+    // If uplink and downlink has the same frequency band, just return the string of that band
+    // otherwise, return both bands with slash e.g. 'Ka-band / Ku-band
+    if (this.uplinkFrequencyBandId === this.downlinkFrequencyBandId) {
+      return this.uplinkFrequencyBand.name;
+    } else {
+      return `${this.uplinkFrequencyBand.name} / ${this.downlinkFrequencyBand.name}`;
+    }
+  },
 });

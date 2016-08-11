@@ -1,0 +1,21 @@
+<template name="showAllFrequencyBands">
+    {{>pageTitle title='All Frequency Bands'}}
+    <div class="row">
+
+        <div class="col-xs-12">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>List of frequency bands</h2>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    {{> reactiveTable settings=settings}}
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<template name="editFrequencyBandButton">
+    <a class="btn btn-xs btn-default" href="{{editFrequencyBandPath}}">Edit</a>
+</template>

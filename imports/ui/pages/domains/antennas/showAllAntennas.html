@@ -1,0 +1,23 @@
+<template name="showAllAntennas">
+    {{>pageTitle title='All Antennas'}}
+    <div class="row">
+
+        <div class="col-xs-12">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>List of antennas</h2>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <div class="row">
+                        {{> reactiveTable settings=settings}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<template name="editAntennaButton">
+    <a class="btn btn-xs btn-default" href="{{editAntennaPath}}">Edit</a>
+</template>

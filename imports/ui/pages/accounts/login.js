@@ -65,19 +65,20 @@ let _handleAuth = function() {
   let username = template.find('[name="username"]').value,
     password = template.find ('[name="password"]').value;
 
-  console.log('Username = ' + username);
+  //console.log('Username = ' + username);
 
   Meteor.call('account.authenticate', username, password, (err, res) => {
     if(err) {
-      $('.error').text(err.reason).show();
+      // $('.error').text(err.reason).show();
+      alert(err.reason);
     } else {
-      console.log('authen success');
+      //console.log('authen success');
       let dummyPassword = 'ecce1234';
       Meteor.loginWithPassword(username, dummyPassword, function(err,res){
         if ( err ) {
 
         } else {
-          console.log('login success');
+          //console.log('login success');
           const redirect = Session.get('redirectAfterLogin');
           if(redirect){
             FlowRouter.go(redirect);

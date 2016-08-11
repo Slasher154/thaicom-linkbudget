@@ -44,27 +44,30 @@ Meteor.methods({
 
       } else {
         console.log('This is new user');
-        let dummyPassword = 'ecce1234';
 
+        // We put the dummy password here just to trick the Meteor user/password system
+        let dummyPassword = 'ecce1234';
         employee.password = dummyPassword;
 
         const newUser = Accounts.createUser(employee);
 
         // Add Roles for this new user
-        console.log(`${employee.firstName} ${emloyee.lastName} is now registered to the system with ID: ${newUser}`);
-        Roles.addUsersToRoles(newUser, 'admin', Roles.GLOBAL_GROUP);
+        console.log(`${employee.firstName} ${employee.lastName} is now registered to the system with ID: ${newUser}`);
+
+        // Make a member of DP-CS a global admin
+        if (employee.dp === 'DP-CS') {
+          Roles.addUsersToRoles(newUser, 'admin', Roles.GLOBAL_GROUP);
+        }
 
         // UpdateUser(newUser, employee);
 
       }
       return true;
-    } else if (username === '37090') { //TODO: Remove this!!
-      return true;
     } else {
       throw new Meteor.Error(403, 'Username/password is incorrect.');
     }
   },
-})
+});
 
 // function to connect Thaicom open authentication database
 
@@ -72,7 +75,7 @@ function ThaicomAuthenticated(username, password){
 
   const apiKey = Meteor.settings.tcOAuth.apiKey; // Get API key from settings file
   const sysName = 'FRQP';
-  const ipAddress = '192.168.29.73';
+  const ipAddress = '172.18.200.73';
 
   const url = 'https://thcom2.thaicom.net/authservice/AuthenticationSystem.asmx?wsdl';
   let args = { param: {
@@ -83,8 +86,7 @@ function ThaicomAuthenticated(username, password){
     APIKey: apiKey,
   },
   };
-
-    /*
+  /*
   const domeEmployee = {
     username: '37090',
     bu: 'BU-SEN',
@@ -113,12 +115,13 @@ function ThaicomAuthenticated(username, password){
         firstName: empProfile.FirstName,
         lastName: empProfile.LastName,
         position: empProfile.Position,
+        image: empProfile.Image,
       };
       return profile;
 
     } else {
-      // Throws Error with failed authentication message
-      throw new Meteor.Error(403, result.Message);
+      // Return false to indicate that authen fails
+      return false;
     }
   }
   catch (err) {
@@ -134,7 +137,9 @@ function ThaicomAuthenticated(username, password){
   /*
   if (username === '37090') {
     // Create a clone of Dome Employee Object
-    let employeeObject = Object.assign({}, employeeProfile);
+    //let employeeObject = Object.assign({}, employeeProfile);
+    let employeeObject = Object.assign({}, domeEmployee);
+
 
     employeeObject.username = username;
     employeeObject.password = password;
@@ -153,6 +158,7 @@ function UpdateUser(userId, employee) {
   updateInfo.bu = employee.bu;
   updateInfo.gender = employee.gender;
   updateInfo.position = employee.position;
+  updateInfo.image = employee.image;
 
   Meteor.users.update({ _id: userId }, { $set: updateInfo });
 }

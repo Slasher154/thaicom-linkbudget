@@ -7,20 +7,30 @@ import { BlazeLayout } from 'meteor/kadira:blaze-layout';
 import { Roles } from 'meteor/alanning:roles';
 
 // Import to load these templates
-import '../../ui/layouts/main-layout.js';
-import '../../ui/components/app-loading/appLoading.js';
+import '../../ui/layouts/mainLayout.js';
+import '../../ui/components/appLoading/appLoading.js';
 import '../../ui/pages/accounts/login.js';
 import '../../ui/pages/dashboard/dashboard.js';
 import '../../ui/pages/index/index.js';
-import '../../ui/pages/contour-plot/contour-plot.js';
+import '../../ui/pages/contourPlot/contourPlot.js';
 import '../../ui/pages/notfound/notfound.js';
-import '../../ui/pages/access_denied/access-denied.js';
+import '../../ui/pages/accessDenied/accessDenied.js';
 
 // Domains page
-import '../../ui/pages/domains/satellites/show-all-satellites.js';
-import '../../ui/pages/domains/satellites/show-single-satellite.js';
-import '../../ui/pages/domains/transponders/show-single-transponder.js';
-import '../../ui/pages/domains/transponders/add-new-transponder.js';
+import '../../ui/pages/domains/satellites/showAllSatellites.js';
+import '../../ui/pages/domains/satellites/showSingleSatellite.js';
+import '../../ui/pages/domains/transponders/showSingleTransponder.js';
+import '../../ui/pages/domains/transponders/addNewTransponder.js';
+import '../../ui/pages/domains/frequencyBands/showAllFrequencyBands.js';
+import '../../ui/pages/domains/antennas/showAllAntennas.js';
+import '../../ui/pages/domains/gateways/showAllGateways.js';
+
+
+
+// Admin page
+import '../../ui/pages/admin/domains/frequencyBands/editFrequencyBand.js';
+import '../../ui/pages/admin/domains/antennas/editAntenna.js';
+import '../../ui/pages/admin/domains/gateways/editGateway.js';
 
 // Manage the FlowRouter routes suggested by https://medium.com/@satyavh/using-flow-router-for-authentication-ba7bb2644f42#.pgc0y06tx
 
@@ -67,9 +77,9 @@ loggedIn.route('/dashboard', {
   },
 });
 
-// Contour Plot => '/contour-plot'
-loggedIn.route('/contour-plot', {
-  name: 'contour-plot',
+// Contour Plot => '/contourPlot'
+loggedIn.route('/contourPlot', {
+  name: 'contourPlot',
   action() {
     BlazeLayout.render('mainLayout', { content: 'contourPlotPage' });
   },
@@ -87,6 +97,27 @@ loggedIn.route('/logout', {
 
 // --------------------------------------Resources Routes---------------------------------------------------
 
+loggedIn.route('/antennas', {
+  name: 'showAllAntennas',
+  action() {
+    BlazeLayout.render('mainLayout', { content: 'showAllAntennas' });
+  },
+});
+
+loggedIn.route('/frequency-bands', {
+  name: 'showAllFrequencyBands',
+  action() {
+    BlazeLayout.render('mainLayout', { content: 'showAllFrequencyBands' });
+  },
+});
+
+loggedIn.route('/gateways', {
+  name: 'showAllGateways',
+  action() {
+    BlazeLayout.render('mainLayout', { content: 'showAllGateways' });
+  }
+});
+
 loggedIn.route('/satellite/:satelliteName', {
   name: 'showSingleSatellite',
   action() {
@@ -103,6 +134,8 @@ loggedIn.route('/satellite/:satelliteName/:transponderName', {
 
 // -------------------------------------End of Resources Routes---------------------------------------------
 
+// ------------------------------------- Admin Routes ----------------------------------------------
+
 // Only admin can access following routes
 let admin = loggedIn.group({
   prefix: '/admin',
@@ -115,14 +148,9 @@ let admin = loggedIn.group({
   }]
 });
 
-// Domain routes
-let domain = admin.group({
-  prefix: '/domain',
-});
-
 // --------------------------------------Satellite Domain Routes ---------------------------------
 
-domain.route('/satellites', {
+admin.route('/satellites', {
   name: 'showAllSatellites',
   action() {
     BlazeLayout.render('mainLayout', { content: 'showAllSatellites' });
@@ -130,7 +158,7 @@ domain.route('/satellites', {
 });
 
 /*
-domain.route('/satellites/:satelliteName', {
+admin.route('/satellites/:satelliteName', {
   name: 'showSingleSatellite',
   action() {
     var satelliteName = FlowRouter.getParam('satelliteName');
@@ -142,12 +170,44 @@ domain.route('/satellites/:satelliteName', {
 
 // --------------------------------------Transponder Domain Routes ---------------------------------
 
-domain.route('/transponder/add', {
+admin.route('/transponder/add', {
   name: 'addNewTransponder',
   action() {
     BlazeLayout.render('mainLayout', { content: 'addNewTransponder' });
   },
 });
+
+// --------------------------------------Frequency Band Domain Routes ---------------------------------
+
+// Edit frequency band
+admin.route('/frequency-bands/:band/edit', {
+  name: 'editFrequencyBand',
+  action() {
+    BlazeLayout.render('mainLayout', { content: 'editFrequencyBand' });
+  },
+});
+
+// --------------------------------------Antenna Domain Routes ---------------------------------
+
+// Edit antenna
+admin.route('/antennas/:antennaName/edit', {
+  name: 'editAntenna',
+  action() {
+    BlazeLayout.render('mainLayout', { content: 'editAntenna' });
+  },
+});
+
+// --------------------------------------Gateway Domain Routes ---------------------------------
+
+// Edit gateway
+admin.route('/gateways/:_id/:gatewayName/edit', {
+  name: 'editGateway',
+  action() {
+    BlazeLayout.render('mainLayout', { content: 'editGateway' });
+  },
+});
+
+// -------------------------------------End of Admin Routes ----------------------------------------------
 
 
 // Access Denied route

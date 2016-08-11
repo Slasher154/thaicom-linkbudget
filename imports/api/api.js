@@ -8,5 +8,8 @@
 import './domains/satellites/satellites.js';
 import './domains/transponders/transponders.js';
 import './domains/gateways/gateways.js';
+import './domains/modems/modems.js';
 import './domains/users/users.js';
+
+import './tabularTables.js';
 

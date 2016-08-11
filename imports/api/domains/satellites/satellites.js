@@ -14,10 +14,12 @@ Satellites.schema = new SimpleSchema({
   name: {
     type: String,
     label: 'Name',
+    unique: true,
   },
   alternateName: {
     type: String,
     optional: true,
+    unique: true,
   },
   orbitalSlot: Object.assign(LongitudeField, { label: 'Orbital Slot' }),
   type: {

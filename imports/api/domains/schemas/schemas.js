@@ -34,20 +34,49 @@ export const BandwidthField = {
 
 export const FrequencyBandField = {
   type: String,
-  allowedValues: ['c-band','ku-band','ka-band'],
+  allowedValues: ['c-band', 'ku-band', 'ka-band'],
   autoform: {
     options: [
       { label: 'C-Band', value: 'c-band' },
       { label: 'Ku-Band', value: 'ku-band' },
       { label: 'Ka-Band', value: 'ka-band' },
-    ]
+    ],
+    type: 'select2',
   },
+};
 
-}
+export const FrequencyBandsField = {
+  type: [String],
+  autoform: {
+    options: [
+      { label: 'C-Band', value: 'c-band' },
+      { label: 'Ku-Band', value: 'ku-band' },
+      { label: 'Ka-Band', value: 'ka-band' },
+    ],
+    type: 'select2',
+    afFieldInput: {
+      multiple: true,
+    },
+  },
+};
 
 export const PolarizationField = {
   type: String,
   allowedValues: ['V', 'H', 'RHCP', 'LHCP'],
+  autoform: {
+    type: 'select2',
+  }
+};
+
+export const PolarizationsField = {
+  type: [String],
+  allowedValues: ['V', 'H', 'RHCP', 'LHCP'],
+  autoform: {
+    type: 'select2',
+    afFieldInput: {
+      multiple: true,
+    },
+  },
 };
 
 export const NumberOfCarriersField = {
@@ -58,7 +87,8 @@ export const NumberOfCarriersField = {
       { label: 'Single Carrier', value: 'single' },
       { label: 'Two Carriers', value: 'two' },
       { label: 'Multiple Carriers', value: 'multi' },
-    ]
+    ],
+    type: 'select2',
   },
  };
 
@@ -77,7 +107,8 @@ export const InterferenceTypeField = {
       { label: 'XPD', value: 'xpd' },
       { label: 'Adjacent Satellites', value: 'adj-sat'},
       { label: 'Cross Cells', value: 'adj-cells' },
-    ]
+    ],
+    type: 'select2',
   },
 };
 
@@ -148,5 +179,4 @@ export const HpaSchema = new SimpleSchema({
     decimal: true,
     label: 'Uplink Power Control in dB',
   },
-
 });

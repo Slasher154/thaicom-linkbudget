@@ -12,6 +12,7 @@ Accounts.onCreateUser(function(options, user){
   user.bu = options.bu;
   user.gender = options.gender;
   user.position = options.position;
+  user.image = options.image;
   // Returns the user object
   return user;
 });

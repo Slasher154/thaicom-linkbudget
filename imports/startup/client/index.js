@@ -25,3 +25,6 @@ Tracker.autorun(function() {
     FlowRouter.initialize();
   }
 });
+
+// Initialize TabularTable parameter
+TabularTables = {};

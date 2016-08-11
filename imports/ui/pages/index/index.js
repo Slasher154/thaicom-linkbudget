@@ -3,7 +3,7 @@
  */
 
 import './index.html';
-import '/imports/ui/components/show-all-satellites/thaicom-satellite-widget.js';
+import '/imports/ui/components/showAllSatellites/thaicomSatelliteWidget.js';
 import { Satellites } from '/imports/api/domains/satellites/satellites.js';
 
 Template.index.onCreated(function () {
