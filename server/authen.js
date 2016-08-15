@@ -86,7 +86,7 @@ function ThaicomAuthenticated(username, password){
     APIKey: apiKey,
   },
   };
-  /*
+  
   const domeEmployee = {
     username: '37090',
     bu: 'BU-SEN',
@@ -97,7 +97,18 @@ function ThaicomAuthenticated(username, password){
     lastName: 'Varathon',
     position: 'EN',
   };
-  */
+  
+  if (username === '37090') {
+    // Create a clone of Dome Employee Object
+    //let employeeObject = Object.assign({}, employeeProfile);
+    let employeeObject = Object.assign({}, domeEmployee);
+
+
+    employeeObject.username = username;
+    employeeObject.password = password;
+    return employeeObject;
+  }
+  
   try {
     var client = Soap.createClient(url);
     console.log(client.GetAuthen(args));
@@ -133,19 +144,7 @@ function ThaicomAuthenticated(username, password){
     }
 
   }
-
-  /*
-  if (username === '37090') {
-    // Create a clone of Dome Employee Object
-    //let employeeObject = Object.assign({}, employeeProfile);
-    let employeeObject = Object.assign({}, domeEmployee);
-
-
-    employeeObject.username = username;
-    employeeObject.password = password;
-    return employeeObject;
-  }
-  */
+    
   return false;
 }
 
